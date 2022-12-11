@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 contract CrowdFunding {
     struct Campaign {
-        string name;
+        string title;
         string description;
         address creator;
         uint256 deadline;
@@ -18,7 +18,7 @@ contract CrowdFunding {
     uint256 public campaignCount;
 
     event CampaignCreation(
-        string name,
+        string title,
         string description,
         address creator,
         uint256 deadline,
@@ -28,7 +28,7 @@ contract CrowdFunding {
     event Donation(uint256 id, uint256 amount);
 
     function createCampaign(
-        string memory _name,
+        string memory _title,
         string memory _description,
         uint256 _deadline,
         uint256 _target,
@@ -41,7 +41,7 @@ contract CrowdFunding {
             "The deadline should be a date in the future."
         );
 
-        campaign.name = _name;
+        campaign.title = _title;
         campaign.description = _description;
         campaign.creator = msg.sender;
         campaign.deadline = _deadline;
@@ -52,7 +52,7 @@ contract CrowdFunding {
         campaign.donators = new address[](0);
 
         emit CampaignCreation(
-            _name,
+            _title,
             _description,
             msg.sender,
             _deadline,

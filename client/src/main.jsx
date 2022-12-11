@@ -1,40 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./index.css";
-import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { AppProvider } from "./context/context";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+// import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
+import { AppProvider } from './context/context';
 
+import App from './App';
+import './index.css';
 
-const { chains, provider } = configureChains(
-  [chain.localhost, chain.goerli, chain.polygonMumbai],
-  [publicProvider()]
-);
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const { connectors } = getDefaultWallets({
-  appName: "Crowd Funding",
-  chains,
-});
-
-const wagmiClient = createClient({
-  connectors,
-  provider,
-});
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <WagmiConfig client={wagmiClient}>
+root.render(
+  // <ThirdwebProvider desiredChainId={ChainId.Goerli}> 
     <Router>
-    <AppProvider>
-    <RainbowKitProvider chains={chains}>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-    </RainbowKitProvider>
-    </AppProvider>
+      <AppProvider> 
+        <App />
+      </AppProvider>
     </Router>
-  </WagmiConfig>
-);
+  // </ThirdwebProvider> 
+)

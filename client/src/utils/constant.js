@@ -1,4 +1,4 @@
-export const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const contractAddress = "0x34dE1acb505f25fCCb54bF7C49732C59Eb4E0ec5";
 
 export const contractABI = [
   {
@@ -7,7 +7,7 @@ export const contractABI = [
       {
         indexed: false,
         internalType: "string",
-        name: "name",
+        name: "title",
         type: "string",
       },
       {
@@ -88,7 +88,7 @@ export const contractABI = [
     outputs: [
       {
         internalType: "string",
-        name: "name",
+        name: "title",
         type: "string",
       },
       {
@@ -129,7 +129,7 @@ export const contractABI = [
     inputs: [
       {
         internalType: "string",
-        name: "_name",
+        name: "_title",
         type: "string",
       },
       {
@@ -179,7 +179,7 @@ export const contractABI = [
         components: [
           {
             internalType: "string",
-            name: "name",
+            name: "title",
             type: "string",
           },
           {
