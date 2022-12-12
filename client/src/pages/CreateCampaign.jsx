@@ -21,9 +21,7 @@ const [form, setForm] = useState({
   image: '' 
 });
 
-const {createCampaign} = useContext(AppContext)
-// console.log("Address", address)
-const address = "hh"
+const {createCampaign, address} = useContext(AppContext)
 
 const handleFormFieldChange = (fieldName, e) => {
   setForm({ ...form, [fieldName]: e.target.value })

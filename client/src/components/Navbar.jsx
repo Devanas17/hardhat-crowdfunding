@@ -11,7 +11,8 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const address = "hh";
+  const {address} = useContext(AppContext)
+
   const connect = () => {}
 
   return (
