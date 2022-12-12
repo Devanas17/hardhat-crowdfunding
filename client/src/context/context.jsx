@@ -1,15 +1,58 @@
 import { useState, useEffect, createContext } from "react";
 import { ethers } from "ethers";
 import { contractAddress, contractABI } from "../utils/constant";
-import { useAccount } from "wagmi";
+import {useAccount, useConnect, useDisconnect } from "wagmi";
+
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const address = useAccount();
-  const [crContract, setCrContract] = useState()
+  // const {address, isConnected} = useAccount();
+  const [currentAccount, setCurrentAccount] = useState("");
 
+  const [crContract, setCrContract] = useState()
   const { ethereum } = window;
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!ethereum) {
+        alert("Make sure you have metamask!");
+        return;
+      } else {
+        console.log("We have the ethereum object", ethereum);
+      }
+
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (accounts.length) {
+        const account = accounts[0];
+        console.log("Found an authorized account:", account);
+        setCurrentAccount(account);
+      } else {
+        console.log("No authorized account found");
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("No Ethereum object.");
+    }
+  };
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Make sure you have Metamask");
+      }
+
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log("Connected", accounts[0]);
+      setCurrentAccount(accounts[0]);
+    } catch (error) {
+      console.log(error);
+      throw new Error("No Ethereum object found!");
+    }
+  };
 
   const createCampaign = async (form) => {
     try {
@@ -76,8 +119,56 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const getUserCampaign = async() => {
+    try {
+        const allCampaigns = await getAllCampaigns();
+        const filteredCampaigns = allCampaigns.filter((campaign) => campaign.creator === currentAccount);
+        return filteredCampaigns;
+    } catch (error) {
+      console.log("GetUser Campaign is faled", error)
+    }
+  }
+
+  const donate = async (pId, amount) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+    const data = await contract.donateToCampaign( pId, { value: ethers.utils.parseEther(amount)});
+    return data;
+  }
+
+  const getDonations = async (pId) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+    const donations = await contract.getDonators(pId);
+    const numberOfDonations = donations[0].length;
+
+    const parsedDonations = [];
+
+    for(let i = 0; i < numberOfDonations; i++) {
+      parsedDonations.push({
+        donator: donations[0][i],
+        donation: ethers.utils.formatEther(donations[1][i].toString())
+      })
+    }
+
+    return parsedDonations;
+  }
+  
+
   return (
-    <AppContext.Provider value={{ createCampaign, address, getAllCampaigns, crContract }}>
+    <AppContext.Provider value={{ createCampaign, currentAccount, connectWallet, getAllCampaigns, crContract, getUserCampaign, donate, getDonations}}>
       {children}
     </AppContext.Provider>
   );

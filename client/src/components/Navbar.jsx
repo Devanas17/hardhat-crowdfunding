@@ -11,7 +11,8 @@ const Navbar = () => {
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const {address} = useContext(AppContext)
+  const {currentAccount, connectWallet} = useContext(AppContext)
+  console.log("currentAccount is :",currentAccount)
 
   const connect = () => {}
 
@@ -36,11 +37,11 @@ const Navbar = () => {
       <div className="sm:flex hidden flex-row justify-end gap-4">
         <CustomButton
           btnType="button"
-          title={address ? "Create a campaign" : "Connect"}
-          styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
+          title={currentAccount ? "Create a campaign" : "Connect"}
+          styles={currentAccount ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={() => {
-            if (address) navigate("create-campaign");
-            else connect();
+            if (currentAccount) navigate("create-campaign");
+            else connectWallet();
           }}
         />
 
@@ -111,10 +112,10 @@ const Navbar = () => {
           <div className="flex mx-4">
             <CustomButton
               btnType="button"
-              title={address ? "Create a campaign" : "Connect"}
-              styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
+              title={currentAccount ? "Create a campaign" : "Connect"}
+              styles={currentAccount ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
               handleClick={() => {
-                if (address) navigate("create-campaign");
+                if (currentAccount) navigate("create-campaign");
                 else ConnectButton();
               }}
             />

@@ -17,10 +17,14 @@ const Home = () => {
   useEffect(() => {
     if (crContract) fetchCampaigns();
   }, [address, crContract]);
+  useEffect(() => {
+     fetchCampaigns();
+  }, []);
 
   return (
     <div className="text-white">
       <DisplayCampaign
+      key={campaigns?.id}
         title="All Campaigns"
         isLoading={isLoading}
         campaigns={campaigns}
