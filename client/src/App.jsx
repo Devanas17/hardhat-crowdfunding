@@ -1,9 +1,15 @@
-import { useState } from 'react'
-import {Sidebar, Navbar} from "./components"
+import { useState, useContext } from 'react'
+import {Sidebar, Navbar, Login} from "./components"
 import {Home, Profile, CreateCampaign, CampaignDetails} from "./pages/index"
 import {Route, Routes} from "react-router-dom"
+import {AppContext} from "./context/context"
 
 function App() {
+const {currentAccount, setCurrentAccount} = useContext(AppContext)
+const [account, setAccount] = useState('')
+  if(!currentAccount) {
+    return <Login />
+  }
 
   return (
     <div className="relative max-w-[1400px] mx-auto sm:-8 p-4 bg-[#13131a] min-h-screen flex flex-row">

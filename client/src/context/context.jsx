@@ -7,7 +7,6 @@ import {useAccount, useConnect, useDisconnect } from "wagmi";
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // const {address, isConnected} = useAccount();
   const [currentAccount, setCurrentAccount] = useState("");
 
   const [crContract, setCrContract] = useState()
@@ -47,12 +46,26 @@ export const AppProvider = ({ children }) => {
         method: "eth_requestAccounts",
       });
       console.log("Connected", accounts[0]);
+      localStorage.setItem('isWalletConnected', true)
       setCurrentAccount(accounts[0]);
     } catch (error) {
       console.log(error);
       throw new Error("No Ethereum object found!");
     }
   };
+
+  useEffect(() => {
+    const connectWalletOnPageLoad = async () => {
+      if (localStorage?.getItem('isWalletConnected') === 'true') {
+        try {
+          localStorage.setItem('isWalletConnected', true)
+        } catch (ex) {
+          console.log(ex)
+        }
+      }
+    }
+    connectWalletOnPageLoad()
+  }, [])
 
   const createCampaign = async (form) => {
     try {
@@ -120,13 +133,13 @@ export const AppProvider = ({ children }) => {
   };
 
   const getUserCampaign = async() => {
-    try {
-        const allCampaigns = await getAllCampaigns();
-        const filteredCampaigns = allCampaigns.filter((campaign) => campaign.creator === currentAccount);
-        return filteredCampaigns;
-    } catch (error) {
-      console.log("GetUser Campaign is faled", error)
-    }
+
+    const allCampaigns = await getAllCampaigns();
+
+    const filteredCampaigns = allCampaigns.filter((campaign) => campaign.creator === currentAccount);
+
+
+    return filteredCampaigns;
   }
 
   const donate = async (pId, amount) => {

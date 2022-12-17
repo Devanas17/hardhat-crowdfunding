@@ -10,6 +10,7 @@ const Home = () => {
   const fetchCampaigns = async () => {
     setIsLoading(true);
     const data = await getUserCampaign();
+    console.log("The data is",data)
     setCampaigns(data);
     setIsLoading(false);
   };
