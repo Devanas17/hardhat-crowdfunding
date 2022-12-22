@@ -5,7 +5,7 @@ import { DisplayCampaign } from "../components";
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
-  const { address, getAllCampaigns, crContract, currentAccount } = useContext(AppContext);
+  const { address, getAllCampaigns, contract } = useContext(AppContext);
 
   const fetchCampaigns = async () => {
     setIsLoading(true);
@@ -15,9 +15,7 @@ const Home = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (crContract) fetchCampaigns();
-  }, [address, crContract]);
+ 
   useEffect(() => {
      fetchCampaigns();
   }, []);
