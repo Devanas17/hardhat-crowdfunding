@@ -31,7 +31,8 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     ethereumClient();
-  }, [contract]);
+    checkIfWalletIsConnected();
+  }, []);
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -55,10 +56,6 @@ export const AppProvider = ({ children }) => {
       throw new Error("No Ethereum object.");
     }
   };
-
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
 
   const connectWallet = async () => {
     try {

@@ -16,9 +16,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (crContract) fetchCampaigns();
-  }, [currentAccount, crContract]);
-  useEffect(() => {
      fetchCampaigns();
   }, []);
 
