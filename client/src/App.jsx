@@ -1,12 +1,12 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import {Sidebar, Navbar, Login} from "./components"
-import {Home, Profile, CreateCampaign, CampaignDetails} from "./pages/index"
+import {Home, CreateCampaign, CampaignDetails} from "./pages/index"
 import {Route, Routes} from "react-router-dom"
 import {AppContext} from "./context/context"
 
 function App() {
-const {currentAccount, setCurrentAccount} = useContext(AppContext)
-const [account, setAccount] = useState('')
+const {currentAccount} = useContext(AppContext)
+
   if(!currentAccount) {
     return <Login />
   }
@@ -21,7 +21,6 @@ const [account, setAccount] = useState('')
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/create-campaign" element={<CreateCampaign />} />
           <Route path="/campaign-details/:id" element={<CampaignDetails />} />
         </Routes>

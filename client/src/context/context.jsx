@@ -40,13 +40,11 @@ export const AppProvider = ({ children }) => {
         alert("Make sure you have metamask!");
         return;
       } else {
-        console.log("We have the ethereum object", ethereum);
       }
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length) {
         const account = accounts[0];
-        console.log("Found an authorized account:", account);
         setCurrentAccount(account);
       } else {
         console.log("No authorized account found");
@@ -67,7 +65,6 @@ export const AppProvider = ({ children }) => {
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log("Connected", accounts[0]);
       localStorage.setItem("isWalletConnected", true);
       setCurrentAccount(accounts[0]);
     } catch (error) {
@@ -89,7 +86,6 @@ export const AppProvider = ({ children }) => {
         );
         await tx.wait();
 
-        console.log("contract call success", tx);
       }
     } catch (error) {
       console.log("Create Campaign Failed", error);
@@ -114,7 +110,6 @@ export const AppProvider = ({ children }) => {
           pId: i,
         }));
 
-        console.log("contract call success");
         return parsedCampaings;
       }
     } catch (error) {
@@ -122,16 +117,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const getUserCampaign = async () => {
-    const allCampaigns = await getAllCampaigns();
-
-    const filteredCampaigns = allCampaigns.filter(
-      (campaign) => campaign.creator === currentAccount
-    );
-
-    return filteredCampaigns;
-  };
-
+ 
   const donate = async (pId, amount) => {
     const data = await contract.donateToCampaign(pId, {
       value: ethers.utils.parseEther(amount),
@@ -163,7 +149,6 @@ export const AppProvider = ({ children }) => {
         connectWallet,
         getAllCampaigns,
         contract,
-        getUserCampaign,
         donate,
         getDonations,
       }}
